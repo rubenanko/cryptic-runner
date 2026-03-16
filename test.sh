@@ -33,5 +33,4 @@ echo building the embedded version of the test program to test the runner
 x86_64-w64-mingw32-gcc -Iinclude build/main.c -o build/cryptic_runner_test.exe -fno-stack-protector \
   -Wl,--disable-nxcompat \
   -Wl,--disable-dynamicbase \
-  -nostdlib -nodefaultlibs \
   -lkernel32 -mconsole
