@@ -14,8 +14,7 @@
 /* ============================================================================
  * Global API Table
  * ========================================================================= */
-
-DYNAMIC_APIS g_Api = {0};
+DYNAMIC_APIS  g_Api = {0};
 
 /* ============================================================================
  * FNV-1a Hash Functions
@@ -205,7 +204,7 @@ FARPROC GetExportAddress_Hashed(HMODULE hMod, DWORD functionHash) {
  * To generate a hash, use the Python snippet in peb-lookup.h's header comment.
  * ========================================================================= */
 
-bool InitDynamicAPIs(void) {
+DYNAMIC_APIS * InitDynamicAPIs(void) {
     /* Step 1: Resolve kernel32.dll base address via PEB walk */
     HMODULE hKernel32 = GetModuleBase_Hashed(HASH_KERNEL32_DLL);
     if (hKernel32 == NULL)
@@ -248,5 +247,5 @@ bool InitDynamicAPIs(void) {
 
     #undef RESOLVE
 
-    return true;
+    return &g_Api;
 }

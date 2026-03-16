@@ -17,12 +17,10 @@ x86_64-w64-mingw32-gcc -IInclude -o build_tests/test.o -c test/test.c -Os -ffree
 echo combining object files
 x86_64-w64-mingw32-ld build_tests/test.o build_tests/peb-lookup.o -o build_tests/combined.o -e WinMain -nostdlib
 echo extracting the shellcode .text
-x86_64-w64-mingw32-objcopy -O binary --only-section=.text build_tests/combined.o build_tests/text.bin
-x86_64-w64-mingw32-objcopy -O binary --only-section=.data build_tests/combined.o build_tests/data.bin
-x86_64-w64-mingw32-objcopy -O binary --only-section=.rdata build_tests/combined.o build_tests/rdata.bin
-cat build_tests/text.bin build_tests/data.bin build_tests/rdata.bin > build_tests/shellcode.bin
+x86_64-w64-mingw32-objcopy -O binary --only-section=.text build_tests/combined.o build_tests/shellcode.bin
 
-# linking the test program
+# building the test program
+echo building the payload as a PE
 x86_64-w64-mingw32-gcc -Iinclude  build_tests/combined.o -o  build_tests/peb_lookup_test.exe -fno-stack-protector \
   -Wl,--disable-nxcompat \
   -Wl,--disable-dynamicbase \
@@ -31,6 +29,7 @@ x86_64-w64-mingw32-gcc -Iinclude  build_tests/combined.o -o  build_tests/peb_loo
 
 python src/format.py build_tests/shellcode.bin
 
+echo building the embedded version of the test program to test the runner
 x86_64-w64-mingw32-gcc -Iinclude build/main.c -o build/cryptic_runner_test.exe -fno-stack-protector \
   -Wl,--disable-nxcompat \
   -Wl,--disable-dynamicbase \

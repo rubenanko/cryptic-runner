@@ -32,6 +32,9 @@
 #include <tlhelp32.h>
 #include <stdbool.h>
 
+// macro to store data into the .text section
+#define DOT_TEXT __attribute__((section(".text")))
+
 /* ============================================================================
  * NT Structures for PEB Walking
  *
@@ -166,10 +169,10 @@ typedef struct _DYNAMIC_APIS {
 } DYNAMIC_APIS, *PDYNAMIC_APIS;
 
 /* Global instance — defined in peb-lookup.c */
-extern DYNAMIC_APIS g_Api;
+DOT_TEXT extern DYNAMIC_APIS g_Api;
 
 /* Resolve all APIs in g_Api. Call once at program start.
  * Returns true on success, false if any critical API could not be resolved. */
-bool InitDynamicAPIs(void);
+DYNAMIC_APIS * InitDynamicAPIs(void);
 
 #endif /* PEB_LOOKUP_H */
